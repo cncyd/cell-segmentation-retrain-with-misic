@@ -1,4 +1,4 @@
-#重新制作全部的label
+#Modify the result directly identified from the fluorescent image as the label for the identification of the bright field image
 
 import os
 #from numpy import array
@@ -44,18 +44,18 @@ namelist=os.listdir(filepath + 'focuslabel')
 fullenth=len(namelist)
 count=0
 while count<fullenth:
-    #重新制作
+    #binarize the recognition result as a label
     pic=namelist[count]
     patches=np.load('F:/imageprocess/focuslabel/'+pic)
     patches[:,:,:,0][ patches[:,:,:,0]<0.4]=0
     patches[:,:,:,0][ patches[:,:,:,0]>=0.4]=1
     patches[:,:,:,1][ patches[:,:,:,1]>0.1]=1
     patches[:,:,:,1][ patches[:,:,:,1]<=0.1]=0
-    #存起来
+    # define a place to save the label
     tar='/'+pic
     tarpath=os.path.join(filepath,'newfocuslabel'+tar)
     patches=patches.astype(int)
-    #统计分布
+    #Use statistics to monitor each label's situation
     list=patches[:,:,:,0].tolist()
     intervals = {'{}-{}'.format(x/4,(x+1)/4):0 for x in range(4)}
     for m in list:
@@ -65,7 +65,7 @@ while count<fullenth:
                     start,end = tuple(interval.split('-'))
                     if float(start)<=b<=float(end):
                         intervals[interval] +=1
-    #打印出来
+    #print each label's monitor result
     print('------------------'+str(pic)+'---------------------')
     print(intervals)
     np.save(tarpath,patches)
