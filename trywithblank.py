@@ -15,10 +15,10 @@ namelist=os.listdir(filepath + 'workflow/fulllabel')
 
 def data_split(full_list, ratio, shuffle=False):
     """
-    数据集拆分: 将列表full_list按比例ratio（随机）划分为2个子列表sublist_1与sublist_2
-    :param full_list: 数据列表
-    :param ratio:     子列表1
-    :param shuffle:   子列表2
+    Dataset splitting: divide the list full_list into two sublists sublist_1 and sublist_2 according to ratio (randomly)
+    :param full_list: the full_list data
+    :param ratio:     sublist_1
+    :param shuffle:   sublist_2
     :return:
     """
     n_total = len(full_list)
@@ -46,7 +46,8 @@ val, train = data_split(namelist, ratio=0.2, shuffle=True)
 batch_size=32
 training_generator = DataGenerator(train)
 validation_generator = DataGenerator(val)
-#加载模型
+
+#load the model
 #INIT_LR = 0.01
 bce = tf.keras.losses.BinaryCrossentropy(reduction='sum')
 EPOCHS =20
